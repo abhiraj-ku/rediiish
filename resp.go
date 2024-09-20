@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"strconv"
 )
@@ -61,4 +62,65 @@ func (r *Resp) readInteger() (x, n int, err error) {
 
 	return int(i64), n, nil
 
+}
+
+// Parsing or deserialization process
+func (r *Resp) Read() (Value, error) {
+	_type, err := r.reader.ReadByte()
+	if err != nil {
+		return Value{}, err
+	}
+	switch _type {
+	case ARRAY:
+		return r.readArray()
+	case BULK:
+		return r.readBulk()
+	default:
+		fmt.Printf("Unknown type: %v", string(_type))
+		return Value{}, err
+
+	}
+}
+
+// implement readArray function
+func (r *Resp) readArray() (Value, error) {
+	v := Value{}
+	v.typ = "array"
+
+	// read length of the array
+	len, _, err := r.readInteger()
+	if err != nil {
+		return v, err
+	}
+
+	// for each line read and parse the value and store to slice
+	v.array = make([]Value, 0)
+	for i := 0; i < len; i++ {
+		val, err := r.Read()
+		if err != nil {
+			return v, err
+		}
+		v.array = append(v.array, val)
+	}
+	return v, nil
+
+}
+
+// Implement readBulk function to read
+func (r *Resp) readBulk() (Value, error) {
+	v := Value{}
+
+	v.typ = "bulk"
+	len, _, err := r.readInteger()
+	if err != nil {
+		return v, err
+	}
+	bulk := make([]byte, len)
+	r.reader.Read(bulk)
+
+	v.bulk = string(bulk)
+
+	r.readLine() // read \r\n
+
+	return v, nil
 }
