@@ -92,6 +92,20 @@ func get(args []Value) Value {
 // this is basically hashmap of hashmap
 // `map[string]map[string]string`
 
+/* The skeleton of hset behind the scenes
+{
+	"users": {
+		"u1": "Abhishek",
+		"u2": "Arko",
+	},
+	"languages": {
+		"p1": "Golang",
+		"p2": "Javascript",
+	},
+}
+
+*/
+
 var HSETs = map[string]map[string]string{}
 var hsetMutx = sync.RWMutex{}
 
@@ -111,4 +125,24 @@ func hset(args []Value) Value {
 	hsetMutx.RUnlock()
 
 	return Value{typ: "string", str: "OK"}
+}
+
+//HGET - gets the value of (key) set (hset)
+// hget users u1
+
+func hget(args []Value) Value {
+	if len(args) != 2 {
+		return Value{typ: "error", str: "ERR wrong number of arguments for 'hget' command"}
+	}
+	hash := args[0].bulk
+	key := args[1].bulk
+
+	hsetMutx.RLock()
+	value, ok := HSETs[hash][key]
+
+	if !ok {
+		return Value{typ: "null"}
+	}
+
+	return Value{typ: "bulk", bulk: value}
 }
