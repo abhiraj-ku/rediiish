@@ -15,13 +15,15 @@ const (
 	ARRAY   = '*'
 )
 
-// this will hold all the values recieved from client for serialization and deserialization
+// Value represents a data structure for holding various types of values received from a client.
+// It supports serialization and deserialization of different data types.
+
 type Value struct {
-	typ   string  // typ determines the data type carried by Value
-	str   string  // str holds the value of string recieved from simple STRING
-	num   int     // num holds the integer recieved from INTEGER
-	bulk  string  // bulk holds the string recieved from bulk string
-	array []Value //array holds the values recieved from the array
+	typ   string  // typ indicates the type of data stored in the Value (e.g., STRING, INTEGER, BULK, ARRAY)
+	str   string  // str holds a simple string value (used when typ is STRING)
+	num   int     // num holds an integer value (used when typ is INTEGER)
+	bulk  string  // bulk holds a bulk string value (used when typ is BULK)
+	array []Value // array contains a list of Value elements (used when typ is ARRAY)
 }
 
 // Reader struct to read the incoming data/parse and store in Value Struct
