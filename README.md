@@ -2,7 +2,7 @@
 
 =================================
 
-This project implements a basic Redis-like server in Go. It supports a few core commands including `PING`, `SET`, `GET`, `HSET`, and `HGET`. The implementation is structured to handle commands using a custom value type, and it uses synchronization mechanisms to manage concurrent access.
+This project implements a basic Redis-like server in Go. It supports a few core commands including `PING`, `SET`, `GET`, `HSET`, and `HGET`.
 
 ## Features
 
@@ -50,12 +50,13 @@ Make sure you have Go installed on your machine. You can download it from [golan
 
 1.  Clone the repository:
 
-    bash
+        bash
 
-    Copy code
+        Copy code
 
-    `git clone <repository-url>
-cd <repository-directory>`
+        `git clone <repository-url>
+
+    cd <repository-directory>`
 
 2.  Build and run the server:
 
@@ -65,78 +66,22 @@ cd <repository-directory>`
 
     `go run main.go`
 
-### Testing Commands
+---
 
-You can test the server using a Redis client or by creating your own client that communicates over the RESP protocol. Here are some example commands you can use:
+## Future Plans
 
-- **PING**:
+We plan to extend the functionality of this Redis-like server by adding more commands, including:
 
-  bash
+`LPUSH`: Inserts one or more values at the head of a list.
+`RPUSH`: Inserts one or more values at the tail of a list.
+`LPOP` : Removes and returns the first element of a list.
+`RPOP` : Removes and returns the last element of a list.
+`ZADD` : Adds one or more members to a sorted set, or updates the score of an existing member.
 
-  Copy code
+## Contributing
 
-  `*1
-$4
-PING`
+We welcome contributions to this project! Please see our [CONTRIBUTING.md](https://github.com/abhiraj-ku/rediiish/blob/main/CONTRIBUTING.md) for guidelines on how to contribute.
 
-- **SET**:
+## Code of Conduct
 
-  bash
-
-  Copy code
-
-  `*3
-$3
-SET
-$4
-name
-$7
-Abhishek`
-
-- **GET**:
-
-  bash
-
-  Copy code
-
-  `*2
-$3
-GET
-$4
-name`
-
-- **HSET**:
-
-  bash
-
-  Copy code
-
-  `*4
-$4
-HSET
-$5
-users
-$2
-u1
-$8
-Abhishek`
-
-- **HGET**:
-
-  bash
-
-  Copy code
-
-  `*3
-$4
-HGET
-$5
-users
-$2
-u1`
-
-## Conclusion
-
-This implementation serves as a basic example of how to create a simple key-value store similar to Redis using Go. You can expand this further by adding more commands, persistence, and additional features.
-
-Feel free to contribute or modify the code to suit your needs!
+By participating in this project, you agree to abide by our [Code of Conduct](https://github.com/abhiraj-ku/rediiish/blob/main/CODE_OF_CONDUCT.md).
